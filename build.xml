@@ -38,9 +38,21 @@
         <dev_appserver war="war"/>
     </target>
 
-    <target name="update"
+    <target name="update" depends="compile"
             description="Uploads the application to App Engine.">
         <appcfg action="update" war="war"/>
+    </target>
+
+    <target name="request_logs"
+            description="Downloads log data from App Engine for the application.">
+        <appcfg action="request_logs" war="war">
+            <options>
+                <arg value="--num_days=5"/>
+            </options>
+            <args>
+                <arg value="logs.txt"/>
+            </args>
+        </appcfg>
     </target>
 
 </project>
