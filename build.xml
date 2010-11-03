@@ -35,7 +35,7 @@
     </target>
 
     <target name="runserver" description="Starts the development server.">
-        <dev_appserver war="war"/>
+        <dev_appserver war="war" port="8000" address="127.0.0.1"/>
     </target>
 
     <target name="update" depends="compile"
