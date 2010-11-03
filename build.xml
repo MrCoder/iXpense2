@@ -1,6 +1,9 @@
 <project>
     <property name="sdk.dir" location="../appengine-java-sdk"/>
+    <property name="dir.tests" location="test"/>
+    <property name="reports.tests" location="reports"/>
     <import file="${sdk.dir}/config/user/ant-macros.xml"/>
+
     <path id="project.classpath">
         <pathelement path="war/WEB-INF/classes"/>
         <fileset dir="war/WEB-INF/lib">
@@ -10,6 +13,18 @@
             <include name="shared/**/*.jar"/>
         </fileset>
     </path>
+
+    <path id="test.classpath">
+        <path refid="project.classpath"/>
+        <pathelement path="out/classes"/>
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="../libs">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
     <target name="copyjars" description="Copies the App Engine JARs to the WAR.">
         <copy
                 todir="war/WEB-INF/lib"
@@ -53,6 +68,26 @@
                 <arg value="logs.txt"/>
             </args>
         </appcfg>
+    </target>
+
+    <target name="test">
+        <echo>Compiling the junit tests...</echo>
+        <javac srcdir="test"
+               destdir="out/classes"
+               classpathref="test.classpath"
+               debug="on"/>
+
+        <echo>Running the junit tests...</echo>
+        <junit>
+            <formatter type="plain" usefile="false"/>
+            <classpath refid="test.classpath"/>
+            <batchtest todir="${reports.tests}">
+                <fileset dir="test">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
     </target>
 
 </project>
