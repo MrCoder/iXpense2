@@ -32,6 +32,9 @@
             <fileset dir="${sdk.dir}/lib/user">
                 <include name="**/*.jar"/>
             </fileset>
+            <fileset dir="lib">
+                <include name="commons-codec*.jar"/>
+            </fileset>
         </copy>
     </target>
     <target name="compile" depends="copyjars"
@@ -53,7 +56,7 @@
         <dev_appserver war="war" port="8000" address="127.0.0.1"/>
     </target>
 
-    <target name="update" depends="compile"
+    <target name="update" depends="compile, test"
             description="Uploads the application to App Engine.">
         <appcfg action="update" war="war"/>
     </target>
@@ -70,7 +73,7 @@
         </appcfg>
     </target>
 
-    <target name="test">
+    <target name="test" depends="compile">
         <echo>Compiling the junit tests...</echo>
         <javac srcdir="test"
                destdir="out/classes"
@@ -78,7 +81,7 @@
                debug="on"/>
 
         <echo>Running the junit tests...</echo>
-        <junit>
+        <junit failureProperty="test.failure">
             <formatter type="plain" usefile="false"/>
             <classpath refid="test.classpath"/>
             <batchtest todir="${reports.tests}">
@@ -87,6 +90,8 @@
                 </fileset>
             </batchtest>
         </junit>
+
+        <fail message="test failed" if="test.failure" />
 
     </target>
 

@@ -42,22 +42,5 @@ public class IXpenseServletTest {
 
     }
 
-    @Test
-    public void integration_test_to_get_data_from_your_expense() throws IOException {
-        URL url = YourExpenseService.getYourExpenseUrl();
-        String encodedUserAndPassword = YourExpenseService.getEncodedUserAndPassword();
-        URLConnection urlConnection = YourExpenseService.getUrlConnection(url, encodedUserAndPassword);
-
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        InputStream content = urlConnection.getInputStream();
-        BufferedReader in = new BufferedReader(new InputStreamReader(content));
-
-        String line;
-        while ((line = in.readLine()) != null) {
-            System.out.println(line);
-            pw.println(line);
-        }
-    }
 
 }
