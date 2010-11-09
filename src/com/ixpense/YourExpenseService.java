@@ -1,5 +1,6 @@
 package com.ixpense;
 
+import com.ixpense.domain.Expense;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
@@ -8,11 +9,13 @@ import java.net.*;
 public class YourExpenseService {
 
     public String getExpenseList() throws IOException {
-        URL yourExpenseUrl = getYourExpenseUrl();
-        String userAndPassword = getEncodedUserAndPassword();
-        URLConnection yourExpenseUrlConnection = getUrlConnection(yourExpenseUrl, userAndPassword);
+        URL yourExpenseUrl = new URL("http://your-expense.appspot.com/expenses/");
+        String userPassword = "test" + ":" + "test";
+        String userAndPassword = Base64.encodeBase64URLSafeString(userPassword.getBytes());
+        HttpURLConnection urlConnection = (HttpURLConnection) yourExpenseUrl.openConnection();
+        urlConnection.setRequestProperty("Authorization", "Basic " + userAndPassword);
 
-        StringWriter sw = getResponse(yourExpenseUrlConnection);
+        StringWriter sw = getResponse(urlConnection);
         return sw.toString();
     }
 
@@ -30,50 +33,35 @@ public class YourExpenseService {
         return sw;
     }
 
-    private String getEncodedUserAndPassword() {
-        String userPassword = "test" + ":" + "test";
-        return Base64.encodeBase64URLSafeString(userPassword.getBytes());
+    private String encodeParamAndValue(String paramName, String paramValue) throws UnsupportedEncodingException {
+        return URLEncoder.encode(paramName, "UTF-8") + "=" + URLEncoder.encode(paramValue, "UTF-8");
     }
 
-    private HttpURLConnection getUrlConnection(URL url, String encodedUserAndPassword) throws IOException {
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setRequestProperty("Authorization", "Basic " + encodedUserAndPassword);
-        return urlConnection;
-    }
+    public void addExpense(Expense expense) throws IOException {
 
-    private URL getYourExpenseUrl() throws MalformedURLException {
-        return new URL("http://192.168.1.21:8000/expense/");
-    }
+        String data = encodeParamAndValue("amount", String.valueOf(expense.getAmount()));
+        data += "&" + encodeParamAndValue("category", expense.getCategory());
+        data += "&" + encodeParamAndValue("comment", expense.getComment());
 
-    public String addExpense() throws IOException {
 
-        String data = URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode("123", "UTF-8");
-        data += "&" + URLEncoder.encode("category", "UTF-8") + "=" + URLEncoder.encode("test123test", "UTF-8");
-        data += "&" + URLEncoder.encode("comment", "UTF-8") + "=" + URLEncoder.encode("from ixpense", "UTF-8");
-
-        data = "amount=124&category=124test&comment=unknown";
-
-        URL url = new URL("http://192.168.1.21:8000/expense/");
+        URL url = new URL("http://your-expense.appspot.com/expense/");
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 
 
         String userPassword = "test" + ":" + "test";
         urlConnection.setRequestProperty("Authorization", "Basic " + Base64.encodeBase64URLSafeString(userPassword.getBytes()));
 
-        HttpURLConnection yourExpenseUrlConnection = urlConnection;
+        urlConnection.setRequestMethod("POST");
+        urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        urlConnection.setDoOutput(true);
 
-        yourExpenseUrlConnection.setRequestMethod("POST");
-        yourExpenseUrlConnection.setRequestProperty("Content-Type",
-                "application/x-www-form-urlencoded");
-        yourExpenseUrlConnection.setDoOutput(true);
-
-        OutputStreamWriter outputStream = new OutputStreamWriter(yourExpenseUrlConnection.getOutputStream());
+        OutputStreamWriter outputStream = new OutputStreamWriter(urlConnection.getOutputStream());
         outputStream.write(data);
         outputStream.flush();
 
-        StringWriter sw = getResponse(yourExpenseUrlConnection);
+        StringWriter sw = getResponse(urlConnection);
 
+        sw.toString();
 
-        return sw.toString();
     }
 }
