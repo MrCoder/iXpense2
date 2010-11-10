@@ -8,6 +8,13 @@
     <script src="./js/jquery.js"></script>
     <script src="./js/jquery.ui.min.js"></script>
     <script src="./js/master.js"></script>
+    <script type="text/javascript">
+        document.onkeypress = function(e) {
+            var e = window.event || e
+            alert("CharCode value: " + e.charCode)
+            alert("Character: " + String.fromCharCode(e.charCode))
+        }
+    </script>
 </head>
 <body id="ep1-nevenmrgan" class="default">
 <div id="wrapper">

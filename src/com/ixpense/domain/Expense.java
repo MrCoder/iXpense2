@@ -1,6 +1,7 @@
 package com.ixpense.domain;
 
-public class Expense {
+public class
+        Expense {
     private double amount;
     private String category;
     private String comment;

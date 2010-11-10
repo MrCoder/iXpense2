@@ -10,6 +10,10 @@ function initAudio() {
 									    <span id="loading" />\
 									    <span id="handle" class="ui-slider-handle" />\
 									  </span>\
+                                     <span id="gutter_repeat">\
+									    <span id="loading" />\
+									    <span id="handle" class="ui-slider-handle" />\
+									  </span>\
 									  <span id="timeleft" />\
 									  <audio>\
 									    <source src="./audio/horse.ogg" type="audio/ogg"></source>\

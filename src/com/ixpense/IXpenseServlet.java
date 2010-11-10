@@ -15,7 +15,7 @@ public class IXpenseServlet extends HttpServlet {
         while ((len = fis.read(b)) > -1) {
             resp.getOutputStream().write(b, 0, len);
         }
-        resp.getOutputStream().flush();
+        resp.getOutputStream().flush();         
         resp.getOutputStream().close();
     }
 
