@@ -861,7 +861,7 @@ footer a:active {
 #handle {
 	position: absolute;
 	top: -5px;
-	left: 0;
+	/*left: 0;*/
 	width: 20px;
 	height: 20px;
 	margin-left: -10px;

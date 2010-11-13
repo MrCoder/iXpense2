@@ -10,10 +10,6 @@ function initAudio() {
 									    <span id="loading" />\
 									    <span id="handle" class="ui-slider-handle" />\
 									  </span>\
-                                     <span id="gutter_repeat">\
-									    <span id="loading" />\
-									    <span id="handle" class="ui-slider-handle" />\
-									  </span>\
 									  <span id="timeleft" />\
 									  <audio>\
 									    <source src="./audio/horse.ogg" type="audio/ogg"></source>\
@@ -37,38 +33,33 @@ function initAudio() {
         loadingIndicator.remove();
     }
 
+    $('.player #gutter').slider({
+        value: 0,
+        step: 0.01,
+        orientation: "horizontal",
+        range: "min",
+        max: audio.duration,
+        animate: true,
+        slide: function() {
+            manualSeek = true;
+        },
+        stop:function(e, ui) {
+            manualSeek = false;
+            audio.currentTime = ui.value;
+            audio.timeupdate();
+        }
+    });
+
     $(audio).bind('timeupdate', function() {
 
-        var rem = parseInt(audio.duration - audio.currentTime, 10),
-                pos = (audio.currentTime / audio.duration) * 100,
-                mins = Math.floor(rem / 60, 10),
-                secs = rem - mins * 60;
+        pos = (audio.currentTime / audio.duration) * 100;
 
-        timeleft.text('-' + mins + ':' + (secs < 10 ? '0' + secs : secs));
         if (pos > 100) pos = 100;
         if (pos < 0) pos = 0;
-        if (!manualSeek) {
-            positionIndicator.css({left: pos + '%'});
-        }
-        if (!loaded) {
-            loaded = true;
+        positionIndicator.css({left: pos + '%'});
+        timeleft.text(pos);
 
-            $('.player #gutter').slider({
-                value: 0,
-                step: 0.01,
-                orientation: "horizontal",
-                range: "min",
-                max: audio.duration,
-                animate: true,
-                slide: function() {
-                    manualSeek = true;
-                },
-                stop:function(e, ui) {
-                    manualSeek = false;
-                    audio.currentTime = ui.value;
-                }
-            });
-        }
+        onTimeUpdate(audio.currentTime);
 
     }).bind('play', function() {
         $("#playtoggle").addClass('playing');

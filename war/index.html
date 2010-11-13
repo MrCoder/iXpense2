@@ -9,10 +9,38 @@
     <script src="./js/jquery.ui.min.js"></script>
     <script src="./js/master.js"></script>
     <script type="text/javascript">
+
+        repeatStartTime = 0;
+        repeatEndTime = 0;
+
+        function onTimeUpdate(currentTime) {
+            if (inRepeating && currentTime > repeatEndTime) audio.currentTime = repeatStartTime;
+        }
+
+        function KeyPressListener(audioElement, keyCharCode){
+            if (keyCharCode == 97){
+                audioElement.play();
+            }
+            if (keyCharCode == 98){
+                audioElement.pause()
+            }
+            if (keyCharCode == 99){
+                inRepeating = false;
+                repeatStartTime = audioElement.currentTime;
+            }
+            if (keyCharCode == 100){
+                repeatEndTime = audioElement.currentTime;
+                inRepeating = true;
+            }
+        }
+
+
         document.onkeypress = function(e) {
             var e = window.event || e
-            alert("CharCode value: " + e.charCode)
-            alert("Character: " + String.fromCharCode(e.charCode))
+            $('.player_title').text(String.fromCharCode(e.charCode))
+            KeyPressListener(audio, e.charCode)
+//            if (e.charCode == 97)
+
         }
     </script>
 </head>
@@ -22,8 +50,8 @@
         <p class="player_title">Html5 Player</p>
     </section>
 
-
 </div>
+
 
 </body>
 </html> 
