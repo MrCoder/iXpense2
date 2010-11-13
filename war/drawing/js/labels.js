@@ -1,7 +1,7 @@
 function LabelDrawer(ctx){
     this.draw = function(){
         try {
-            ctx.font = "bold 12px sans-serif";
+            ctx.font = "12px";
             ctx.fillText("x", 248, 43);
             ctx.fillText("y", 58, 165);
         } catch(err) {

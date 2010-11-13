@@ -14,8 +14,10 @@
     <script src="./js/arrows.js" type="text/javascript"></script>
     <script src="./js/line.js" type="text/javascript"></script>
     <script src="./js/entity.js" type="text/javascript"></script>
+    <script src="./js/message.js" type="text/javascript"></script>
     <script src="js/domain/entities.js" type="text/javascript"></script>
-    <script src="./js/sequence_dia.js" type="text/javascript"></script>
+    <script src="js/domain/messages.js" type="text/javascript"></script>
+    <script src="js/sequence_printer.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             draw();
@@ -41,25 +43,40 @@
 
 <span id=line class="line" style=display:none></span>
 
+<span id=message class="message" style=display:none></span>
+
 <canvas id="c" width="1024" height="768" style="border:1px dotted;float:left"></canvas>
 
 <script type="text/javascript">
 
 
     function draw() {
+
         var c = document.getElementById("c");
         var ctx = c.getContext("2d");
+
 
         var gridDrawer = new GridDrawer(ctx);
         gridDrawer.draw();
 
-        var entities = getEntities("Service\nController\nView");
         var sequencePrinter = new SequencePrinter(ctx);
-        for (entity in entities) {
+
+        var scriptContent = "Service->Controller:getLegacyReport(userDAO)\n"
+                + "Controller->View: provide dataB\n"
+                + "View->Controller: provide User ops\n"
+                + "View->Controller: provide User ops\n"
+                + "Service->View: privde serviceC\n"
+                + "Service->View: privde serviceC";
+        var entities = getEntities(scriptContent);
+        for (var entity in entities) {
             sequencePrinter.printEntity(entities[entity]);
-//            var lifelineDrawer = new LifeLineDrawer(ctx, entities[entity], 20 + 100 * i, 700);
-//            lifelineDrawer.draw();
         }
+
+        var messages = getSyncMessages(scriptContent);
+        for (var message in messages) {
+            sequencePrinter.printMessage(messages[message]);
+        }
+
 
         var dotsDrawer = new DotsDrawer(ctx);
         dotsDrawer.draw();
