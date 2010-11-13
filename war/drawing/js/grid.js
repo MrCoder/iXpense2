@@ -1,14 +1,14 @@
 function GridDrawer(ctx) {
     this.draw = function() {
         try {/* vertical lines */
-            for (var x = 0.5; x < 500; x += 10) {
+            for (var x = 0.5; x < 1024; x += 10) {
                 ctx.moveTo(x, 0);
-                ctx.lineTo(x, 375);
+                ctx.lineTo(x, 768);
             }
             /* horizontal lines */
-            for (var y = 0.5; y < 375; y += 10) {
+            for (var y = 0.5; y < 768; y += 10) {
                 ctx.moveTo(0, y);
-                ctx.lineTo(500, y);
+                ctx.lineTo(1024, y);
             }
             /* draw it! */
             ctx.strokeStyle = "#eee";
