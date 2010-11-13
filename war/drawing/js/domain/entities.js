@@ -17,8 +17,7 @@ function getEntities(scriptContent) {
 
 function getEntitiesFromSentence(sentence){
     var twoEntities = sentence.split(":")[0];
-    var entitiesArray = twoEntities.split("->");
-    return entitiesArray;
+    return twoEntities.split("->");
 }
 
 function hasThisItemDO(array, itemThat){

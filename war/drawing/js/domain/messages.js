@@ -1,4 +1,4 @@
-function getSyncMessages(scriptContent) {
+function getMessages(scriptContent) {
     var sentences = scriptContent.split("\n");
     var syncMessageArray = new Array();
     var i = 0;
