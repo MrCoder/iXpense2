@@ -5,7 +5,7 @@ function LineDrawer(ctx, left, top, height) {
         ctx.lineTo(left, top + height);
         ctx.closePath();
         /* draw it! */
-        ctx.strokeStyle = "#000";
+        ctx.strokeStyle = css("line", "color");
         ctx.stroke();
     }
 }

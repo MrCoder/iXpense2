@@ -39,6 +39,8 @@
 
 <span id=entityBox class="entityBox" style=display:none></span>
 
+<span id=line class="line" style=display:none></span>
+
 <canvas id="c" width="1024" height="768" style="border:1px dotted;float:left"></canvas>
 
 <script type="text/javascript">
@@ -51,7 +53,7 @@
         var gridDrawer = new GridDrawer(ctx);
         gridDrawer.draw();
 
-        var entities = getEntities();
+        var entities = getEntities("Service\nController\nView");
         var sequencePrinter = new SequencePrinter(ctx);
         for (entity in entities) {
             sequencePrinter.printEntity(entities[entity]);
