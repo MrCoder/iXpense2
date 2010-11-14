@@ -6,10 +6,10 @@ function SequencePrinter(context) {
     this.lastEntityWidth = 0;
     this.entitySpace = 150.3;
     this.lastMessageTop = 60;
-    this.messageSpace = 40.1;
+    this.messageSpace = 15.1;
     this.presentationEntities = new Array();
     this.presentationEntitiesCount = 0;
-    
+
     this.printEntity = function(entity) {
         var presentationEntity = new PresentationEntity();
 
@@ -49,9 +49,18 @@ function SequencePrinter(context) {
         this.lastMessageTop += this.messageSpace;
     };
 
-        this.printGrid = function() {
+    this.printGrid = function() {
         var gridDrawer = new GridDrawer(context);
         gridDrawer.draw();
+    };
+
+    this.checkEntity = function(xMousePos, yMousePos) {
+        for (var itemThis in this.presentationEntities) {
+            var presentationEntity = presentationEntities[itemThis];
+            if(presentationEntity.left < xMousePos
+                    && presentationEntity.left + presentationEntity.width > xMousePos) return true;
+        }
+        return true;
     }
 
 }

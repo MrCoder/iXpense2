@@ -35,6 +35,9 @@
             <fileset dir="lib">
                 <include name="commons-codec*.jar"/>
             </fileset>
+            <fileset dir="../libs/gdata-lib">
+                <include name="*.jar"/>
+            </fileset>
         </copy>
     </target>
     <target name="compile" depends="copyjars"

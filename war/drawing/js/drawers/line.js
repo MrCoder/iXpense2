@@ -3,7 +3,7 @@ function LineDrawer(ctx, left, top, height) {
         ctx.beginPath();
         ctx.moveTo(left, top);
         ctx.lineTo(left, top + height);
-        ctx.closePath();
+//        ctx.closePath();
         /* draw it! */
         ctx.strokeStyle = css("line", "color");
         ctx.stroke();

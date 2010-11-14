@@ -6,19 +6,22 @@
     <link rel="stylesheet" href="./css/sequence.css">
     <script src="../js/jquery.js"></script>
     <script src="../js/jquery.ui.min.js"></script>
-    <script src="./js/lifeline.js" type="text/javascript"></script>
-    <script src="./js/rect.js" type="text/javascript"></script>
-    <script src="./js/grid.js" type="text/javascript"></script>
-    <script src="./js/dots.js" type="text/javascript"></script>
-    <script src="./js/labels.js" type="text/javascript"></script>
-    <script src="./js/arrows.js" type="text/javascript"></script>
-    <script src="./js/line.js" type="text/javascript"></script>
-    <script src="./js/entity.js" type="text/javascript"></script>
-    <script src="./js/message.js" type="text/javascript"></script>
+    <script src="js/drawers/lifeline.js" type="text/javascript"></script>
+    <script src="js/drawers/rect.js" type="text/javascript"></script>
+    <script src="js/drawers/grid.js" type="text/javascript"></script>
+    <script src="js/drawers/dots.js" type="text/javascript"></script>
+    <script src="js/drawers/labels.js" type="text/javascript"></script>
+    <script src="js/drawers/arrow_icon_right.js" type="text/javascript"></script>
+    <script src="js/drawers/arrow_icon_left.js" type="text/javascript"></script>
+    <script src="js/drawers/arrows.js" type="text/javascript"></script>
+    <script src="js/drawers/line.js" type="text/javascript"></script>
+    <script src="js/drawers/entity.js" type="text/javascript"></script>
+    <script src="js/drawers/message.js" type="text/javascript"></script>
+    <script src="js/drawers/internal_invoke.js" type="text/javascript"></script>
     <script src="js/domain/entities.js" type="text/javascript"></script>
     <script src="js/domain/messages.js" type="text/javascript"></script>
     <script src="js/domain/activity_sequence.js" type="text/javascript"></script>
-    <script src="js/sequence_printer.js" type="text/javascript"></script>
+    <script src="js/drawers/sequence_printer.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             draw(document.getElementById("scriptContent").value);
@@ -63,13 +66,14 @@
             <div class="scroll">
 
                 <canvas id="canvas_sequence_dia" width="2024" height="768"
-                        style="border:1px dotted;float:left"></canvas>
+                        style="border:1px dotted;float:left" onclick="choosingEntity();return false"></canvas>
             </div>
 
         </td>
         <td>
             Input your scripts here:
-            <textarea id="scriptContent" rows="53" cols="40" onblur="refreshSequenceDiagram()"></textarea>
+            <span id="debug">debug info come here.</span>
+            <textarea id="scriptContent" rows="53" cols="40" onblur="refreshSequenceDiagram()">A->B:set</textarea>
         </td>
     </tr>
 </table>
@@ -77,9 +81,31 @@
 
 <script type="text/javascript">
 
+    function choosingEntity(){
+        document.onmousemove = captureMousePosition;
+        
+    }
+
+    function captureMousePosition(e){
+        xMousePos = e.pageX;
+        yMousePos = e.pageY;
+        var s = 'X=' + xMousePos +  ' Y=' + yMousePos ;
+        var elementDebug = document.getElementById("debug");
+
+//        if(sequencePrinter.checkEntity(xMousePos, yMousePos)){
+//            elementDebug.innerHTML = "on an entity";
+//
+//        } else {
+//            elementDebug.innerHTML = s;
+//        }
+        elementDebug.innerHTML = s;
+    }
+
 
     function getCanvas() {
-        return document.getElementById("canvas_sequence_dia");
+        var canvas = document.getElementById("canvas_sequence_dia");
+
+        return canvas;
     }
     function resetCanvas(canvas) {
         canvas.width = canvas.width;
@@ -105,14 +131,17 @@
 
 
     function draw(scriptContent) {
-
         var canvas = getCanvas();
         resetCanvas(canvas);
 
         var context = canvas.getContext("2d");
 
-        var sequencePrinter = new SequencePrinter(context);
+        sequencePrinter = new SequencePrinter(context);
+
+
         sequencePrinter.printGrid(context);
+        var internalInvokeDrawer = new InternalInvokeDrawer(context, "selfInvoke", 150, 155);
+        internalInvokeDrawer.draw();
 
         var activitySequence = new ActivitySequence(scriptContent);
         activitySequence.print(sequencePrinter);
