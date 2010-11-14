@@ -11,19 +11,25 @@ function SequencePrinter(context, width, height) {
     this.presentationEntitiesCount = 0;
 
     this.printEntity = function(entity) {
-        var presentationEntity = new PresentationEntity();
-
+        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, entity);
+        if (presentationEntityFrom != null){
+            var lifeLineDrawer = new LifeLineDrawer(context, entity, presentationEntityFrom.left, height);
+            lifeLineDrawer.draw();
+            return;
+        }
         var newLeft = 0;
+
         if (this.lastEntityLeft == 0) {
             newLeft = this.entitySpace / 2;
         } else {
             newLeft = this.lastEntityLeft + this.lastEntityWidth + this.entitySpace;
         }
         var lifeLineDrawer = new LifeLineDrawer(context, entity, newLeft, 700);
-
         this.lastEntityLeft = newLeft;
+
         this.lastEntityWidth = lifeLineDrawer.draw();
 
+        var presentationEntity = new PresentationEntity();
         presentationEntity.name = entity;
         presentationEntity.left = newLeft;
         presentationEntity.width = this.lastEntityWidth;
@@ -61,6 +67,14 @@ function SequencePrinter(context, width, height) {
     this.printGrid = function() {
         var gridDrawer = new GridDrawer(context, width, height);
         gridDrawer.draw();
+    };
+
+    this.setAbsolutPositionOfEntity = function(entityName, left){
+        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, entityName);
+        if (presentationEntityFrom != null) {
+            presentationEntityFrom.left = left;
+            this.onRefresh();
+        }
     };
 
     this.checkEntity = function(xMousePos, yMousePos) {
