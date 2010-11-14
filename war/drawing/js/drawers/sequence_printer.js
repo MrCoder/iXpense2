@@ -32,22 +32,31 @@ function SequencePrinter(context) {
         }
     };
 
-    this.printMessage = function (message) {
+    this.printMessage = function (syncMessage) {
         var left = 0;
         var length = 0;
-        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, message.from);
+        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, syncMessage.from);
         if (presentationEntityFrom != null) {
             left = presentationEntityFrom.left + presentationEntityFrom.width / 2;
         }
-        var presentationEntityTo = getPresentationEntityByName(this.presentationEntities, message.to);
+        var presentationEntityTo = getPresentationEntityByName(this.presentationEntities, syncMessage.to);
         if (presentationEntityTo != null) {
             length = presentationEntityTo.left + presentationEntityTo.width / 2 - left;
         }
 
-        var messageDrawer = new MessageDrawer(context, message.message, left, this.lastMessageTop + this.messageSpace, length);
+        var messageDrawer = new MessageDrawer(context, syncMessage.message, left, this.lastMessageTop + this.messageSpace, length);
         messageDrawer.draw();
         this.lastMessageTop += this.messageSpace;
     };
+
+    this.printInternalInvokeMessage = function(selfInvokeMessage) {
+        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, selfInvokeMessage.from);
+
+        new InternalInvokeDrawer(context, selfInvokeMessage.message, presentationEntityFrom.left + presentationEntityFrom.width / 2, this.lastMessageTop + this.messageSpace)
+                .draw();
+        this.lastMessageTop += this.messageSpace;
+    };
+
 
     this.printGrid = function() {
         var gridDrawer = new GridDrawer(context);
@@ -57,7 +66,7 @@ function SequencePrinter(context) {
     this.checkEntity = function(xMousePos, yMousePos) {
         for (var itemThis in this.presentationEntities) {
             var presentationEntity = presentationEntities[itemThis];
-            if(presentationEntity.left < xMousePos
+            if (presentationEntity.left < xMousePos
                     && presentationEntity.left + presentationEntity.width > xMousePos) return true;
         }
         return true;
