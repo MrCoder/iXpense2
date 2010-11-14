@@ -1,18 +1,18 @@
-function GridDrawer(ctx) {
+function GridDrawer(context, width, height) {
     this.draw = function() {
         try {/* vertical lines */
-            for (var x = 0.5; x < 1024; x += 10) {
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, 768);
+            for (var x = 0.5; x < width; x += 10) {
+                context.moveTo(x, 0);
+                context.lineTo(x, height);
             }
             /* horizontal lines */
-            for (var y = 0.5; y < 768; y += 10) {
-                ctx.moveTo(0, y);
-                ctx.lineTo(1024, y);
+            for (var y = 0.5; y < height; y += 10) {
+                context.moveTo(0, y);
+                context.lineTo(width, y);
             }
             /* draw it! */
-            ctx.strokeStyle = "#eee";
-            ctx.stroke();
+            context.strokeStyle = "#eee";
+            context.stroke();
         } catch(err) {
         }
     }

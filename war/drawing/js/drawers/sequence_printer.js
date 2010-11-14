@@ -1,7 +1,7 @@
 function PresentationEntity() {
 }
 
-function SequencePrinter(context) {
+function SequencePrinter(context, width, height) {
     this.lastEntityLeft = 0;
     this.lastEntityWidth = 0;
     this.entitySpace = 150.3;
@@ -54,12 +54,12 @@ function SequencePrinter(context) {
 
         new InternalInvokeDrawer(context, selfInvokeMessage.message, presentationEntityFrom.left + presentationEntityFrom.width / 2, this.lastMessageTop + this.messageSpace)
                 .draw();
-        this.lastMessageTop += this.messageSpace;
+        this.lastMessageTop += this.messageSpace * 2;
     };
 
 
     this.printGrid = function() {
-        var gridDrawer = new GridDrawer(context);
+        var gridDrawer = new GridDrawer(context, width, height);
         gridDrawer.draw();
     };
 

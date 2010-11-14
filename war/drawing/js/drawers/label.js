@@ -4,7 +4,6 @@ function LabelDrawer(context, message, left, length, top){
         var textMetrics = context.measureText(message);
         context.font = "italic 12px Helvetica";
         var newLeft = left + length / 2 - textMetrics.width / 2 + 5;
-        newLeft = newLeft > left ? newLeft : left;
         context.fillText(message, newLeft, top - 3, 300);
     }
 }

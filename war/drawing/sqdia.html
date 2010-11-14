@@ -139,7 +139,7 @@
 
         var context = canvas.getContext("2d");
 
-        sequencePrinter = new SequencePrinter(context);
+        sequencePrinter = new SequencePrinter(context, canvas.width, canvas.height);
 
 
         sequencePrinter.printGrid(context);
