@@ -25,26 +25,10 @@
     <script src="js/drawers/message.js" type="text/javascript"></script>
     <script src="js/drawers/internal_invoke.js" type="text/javascript"></script>
     <script src="js/domain/entities.js" type="text/javascript"></script>
+    <script src="js/domain/message.js" type="text/javascript"></script>
     <script src="js/domain/messages.js" type="text/javascript"></script>
     <script src="js/domain/activity_sequence.js" type="text/javascript"></script>
     <script src="js/drawers/sequence_printer.js" type="text/javascript"></script>
-
-    <style type="text/css">
-      .CodeMirror-line-numbers {
-        width: 2.2em;
-        color: #aaa;
-        background-color: #eee;
-        text-align: right;
-        padding-right: .3em;
-        font-size: 10pt;
-        font-family: monospace;
-        padding-top: .4em;
-        line-height: normal;
-      }
-    </style>
-
-    <link rel="stylesheet" type="text/css" href="codemirror/css/docs.css" />
-
 
     <script type="text/javascript">
         // Util function, get css property on an element.
@@ -56,17 +40,28 @@
 
         var sequencePrinter;
 
+        function getCanvas() {
+            return document.getElementById("canvas_sequence_dia");
+        }
+        function resetCanvas() {
+            var canvas = getCanvas();
+            canvas.width = canvas.width;
+        }
+
         // This will reset the canvas, and get script from 'scriptContent' and draw it on canvas
         function reDrawSequenceDiaWithScript() {
+            window.sequencePrinter.resetMessageTop();
+
             resetCanvas();
             draw(document.getElementById("scriptContent").value);
+
+            $('#entity_info').text(window.sequencePrinter.textInfo());
         }
 
         // 1. Draw the sequence diagram when the document get ready.
         // 2. Bind sequencePrinter's onRefresh with reDrawSequenceDiaWithScript
         $(document).ready(function() {
 
-            
             var canvas = getCanvas();
 
             var context = canvas.getContext("2d");
@@ -94,79 +89,61 @@
 
             }
         }
+
+        function choosingEntity() {
+            document.onmousemove = captureMousePosition;
+        }
+
+        function captureMousePosition(e) {
+            xMousePos = e.pageX - 22.5;
+            yMousePos = e.pageY;
+            var s = 'X=' + xMousePos + ' Y=' + yMousePos;
+
+            window.selectedEntityName = window.sequencePrinter.checkEntity(xMousePos, yMousePos);
+            if (window.selectedEntityName != "") {
+                window.sequencePrinter.select(window.selectedEntityName);
+                $('#mouse_position').text("on entity:" + window.selectedEntityName);
+            } else {
+                $('#mouse_position').text(s);
+            }
+        }
     </script>
 
 </head>
 <body>
 
-<span id=entityBox class="entityBox" style=display:none></span>
-
-<span id=line class="line" style=display:none></span>
-
-<span id=message class="message" style=display:none></span>
+<span id="for_css_util" style="display:none">
+    <span id=entityBox class="entityBox"></span>
+    <span id=line class="line"></span>
+    <span id=message class="message"></span>
+</span>
 <span id=entity_background style=display:none>
-    <img id="entity_back" src="resource/entity_background.gif" alt="sleeping cat" width="177" height="113"/>
-    <img id="entity_tl" src="resource/tl.gif" alt="sleeping cat" width="177" height="113"/>
-    <img id="entity_tr" src="resource/tr.gif" alt="sleeping cat" width="177" height="113"/>
-    <img id="entity_bl" src="resource/bl.gif" alt="sleeping cat" width="177" height="113"/>
-    <img id="entity_br" src="resource/br.gif" alt="sleeping cat" width="177" height="113"/>
-    <img id="entity_in" src="resource/in.png" alt="sleeping cat" width="177" height="113"/>
+    <img id="entity_tl" src="resource/tl.gif"/>
+    <img id="entity_tr" src="resource/tr.gif"/>
+    <img id="entity_bl" src="resource/bl.gif"/>
+    <img id="entity_br" src="resource/br.gif"/>
+    <img id="entity_in" src="resource/in.png"/>
  </span>
 
 <div>
     <div class="scroll" style="float:left;width:66%">
-
         <canvas id="canvas_sequence_dia" width="2024" height="768"
                 style="border:1px dotted;" onclick="choosingEntity();return false"></canvas>
     </div>
     <div style="float:right;width:31%">
-        <span id="debug">debug info come here.</span> <br/>
+        <span id="mouse_position">debug info come here.</span> <br/>
         <span id="entity_info">debug info come here.</span> <br/>
         <span id="key_press">debug info come here.</span> <br/>
-        <textarea id="scriptContent" title="Input your script:" style="height:700px"
-                  onblur="reDrawSequenceDiaWithScript()">From:Return=To.Message</textarea>
+        <label title="Your sequence script here:">
+            <textarea id="scriptContent" title="Script Content" style="width:100%;height:700px"
+                      onblur="reDrawSequenceDiaWithScript()">From:Return=To.Message</textarea>
+        </label>
     </div>
-
 </div>
 
 
 <script type="text/javascript">
 
-    function choosingEntity() {
-        document.onmousemove = captureMousePosition;
-
-    }
-
-    function captureMousePosition(e) {
-        var canvas = getCanvas();
-
-        xMousePos = e.pageX - 22.5;
-        yMousePos = e.pageY;
-        var s = 'X=' + xMousePos + ' Y=' + yMousePos;
-        var elementDebug = document.getElementById("debug");
-
-        window.selectedEntityName = window.sequencePrinter.checkEntity(xMousePos, yMousePos);
-        if (window.selectedEntityName != "") {
-            window.sequencePrinter.select(window.selectedEntityName);
-            elementDebug.innerHTML = "on entity:" + window.selectedEntityName;
-
-        } else {
-            elementDebug.innerHTML = s;
-        }
-        //        elementDebug.innerHTML = s;
-    }
-
-
-    function getCanvas() {
-        var canvas = document.getElementById("canvas_sequence_dia");
-
-        return canvas;
-    }
-    function resetCanvas() {
-        var canvas = getCanvas();
-        canvas.width = canvas.width;
-        window.sequencePrinter.resetMessageTop();
-    }
     function getEntityBackground() {
         return document.getElementById("entity_back");
     }
@@ -188,34 +165,22 @@
 
 
     function draw(scriptContent) {
-
-
         window.sequencePrinter.printGrid();
-
         var activitySequence = new ActivitySequence(scriptContent);
-
         activitySequence.print(window.sequencePrinter);
-
-        var elementEntityInfo = document.getElementById("entity_info");
-        elementEntityInfo.innerHTML = window.sequencePrinter.textInfo();
-
-
     }
-
-
-
 </script>
 
 
-<script type="text/javascript">
-  var editor = CodeMirror.fromTextArea('scriptContent', {
-    parserfile: "parsecss.js",
-    stylesheet: "codemirror/css/csscolors.css",
-    path: "codemirror/js/",
-    continuousScanning: 500,
-    lineNumbers: true
-  });
-</script>
+<!--<script type="text/javascript">-->
+<!--var editor = CodeMirror.fromTextArea('scriptContent', {-->
+<!--parserfile: "parsecss.js",-->
+<!--stylesheet: "codemirror/css/csscolors.css",-->
+<!--path: "codemirror/js/",-->
+<!--continuousScanning: 500,-->
+<!--lineNumbers: true-->
+<!--});-->
+<!--</script>-->
 
 </body>
 </html>

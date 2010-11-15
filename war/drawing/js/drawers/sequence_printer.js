@@ -53,6 +53,8 @@ function SequencePrinter(context, width, height) {
     };
 
     this.printMessage = function (syncMessage) {
+        this.printEntity(syncMessage.from);
+        this.printEntity(syncMessage.to);
         var left = 0;
         var length = 0;
         var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, syncMessage.from);
