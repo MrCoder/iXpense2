@@ -1,4 +1,4 @@
-function EntityDrawer(ctx, entityName, left, top){
+function EntityDrawer(ctx, entityName, left, top, selected){
     this.draw = function(){
         ctx.font = "bold 14px Times New Roman";
 
@@ -9,7 +9,10 @@ function EntityDrawer(ctx, entityName, left, top){
         rectangleDrawer.draw();
 
         var maxWidth = 1000;
-        ctx.fillStyle="#000";
+        if (selected)
+            ctx.fillStyle="blue";
+        else
+            ctx.fillStyle="black";
         ctx.fillText(entityName, left + 10, top + 20, maxWidth);
         return rectangleWidth;
     }
