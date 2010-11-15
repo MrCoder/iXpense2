@@ -1,6 +1,6 @@
 //This is the root data model for the sequence diagram
 function ActivitySequence(scriptContent) {
-    this.entities = getEntities(scriptContent);
+//    this.entities = getEntities(scriptContent);
     this.messages = getMessages(scriptContent);
 
     this.print = function(sequencePrinter) {
