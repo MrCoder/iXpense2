@@ -1,22 +1,20 @@
-// This is to draw an arrow like ---> or <----
-// length could be negative
-function HorizontalArrowDrawer(context, left, top, length){
-    this.drawRightArrow = function() {
-        new ArrowIconRightDrawer(context, left + length, top).draw();
+function HorizontalArrowDrawer(context){
+    this.drawRightArrow = function(left, top, length) {
+        new ArrowIconRightDrawer(context).draw(left + length, top);
     };
 
-    this.drawLeftArrow = function() {
-        new ArrowIconLeftDrawer(context, left+length, top).draw();
+    this.drawLeftArrow = function(left, top, length) {
+        new ArrowIconLeftDrawer(context).draw(left+length, top);
     };
 
-    this.draw = function(){
+    this.draw = function(left, top, length){
         // draw the line: ----
-        new HorizontalLineDrawer(context, left, top, length).draw();
+        new HorizontalLineDrawer(context).draw(left, top, length);
         // draw the arrow icon
         if(length > 0) {
-            this.drawRightArrow();
+            this.drawRightArrow(left, top, length);
         } else {
-            this.drawLeftArrow();
+            this.drawLeftArrow(left, top, length);
         }
     }
 }

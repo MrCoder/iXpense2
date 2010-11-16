@@ -1,5 +1,5 @@
-function GridDrawer(context, width, height) {
-    this.draw = function() {
+function GridDrawer(context) {
+    this.draw = function(width, height) {
         try {/* vertical lines */
             for (var x = 0.5; x < width; x += 10) {
                 context.moveTo(x, 0);

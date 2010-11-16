@@ -1,11 +1,7 @@
-function ArrowIconRightDrawer(context, left, top){
+function ArrowIconRightDrawer(context){
     const arrowImageHeight = 18;
     
-    this.draw = function(){
-        var smallArrow = new Image();
-        smallArrow.src = "./resource/arrow_right.gif";
-        smallArrow.onload = function() {
-            context.drawImage(smallArrow, left + length - 12, top - arrowImageHeight/2);
-        };
+    this.draw = function(left, top){
+        context.drawImage(get_arrow_right(), left + length - 12, top - arrowImageHeight/2);
     }
 }

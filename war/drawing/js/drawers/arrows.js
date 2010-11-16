@@ -1,4 +1,4 @@
-function ArrowsDrawer(ctx){
+function ____ArrowsDrawer(ctx){
     this.draw = function(){
         try {/* x-axis */
             ctx.beginPath();

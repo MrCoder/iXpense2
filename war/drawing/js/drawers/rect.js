@@ -1,5 +1,5 @@
-function RectangleDrawer(context, left, top, width) {
-    this.draw = function() {
+function RectangleDrawer(context) {
+    this.draw = function(left, top, width) {
         var entityHeight = 30;
 
         context.drawImage(getEntityBackground_in(), left, top, width, entityHeight);

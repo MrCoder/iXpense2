@@ -1,6 +1,6 @@
-function MessageDrawer(context, message, left, top, length) {
-    this.draw = function() {
-        new HorizontalArrowDrawer(context, left, top, length).draw();
-        new LabelDrawer(context, message, left, length, top).draw();
+function MessageDrawer(context) {
+    this.draw = function(message, left, top, length) {
+        new HorizontalArrowDrawer(context).draw(left, top, length);
+        new LabelDrawer(context).draw(message, left, length, top);
     }
 }

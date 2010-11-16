@@ -1,5 +1,5 @@
-function LabelDrawer(context, message, left, length, top){
-    this.draw = function(){
+function LabelDrawer(context){
+    this.draw = function(message, left, length, top){
          var maxWidth = 1000;
         var textMetrics = context.measureText(message);
         context.font = "italic 12px Helvetica";

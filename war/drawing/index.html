@@ -124,6 +124,10 @@
     <img id="entity_br" src="resource/br.gif"/>
     <img id="entity_in" src="resource/in.png"/>
  </span>
+<span id="small_arrow_icon" style="display:none">
+    <img id="arrow_left" src="resource/arrow_left.gif">
+    <img id="arrow_right" src="resource/arrow_right.gif">
+</span>
 
 <div>
     <div class="scroll" style="float:left;width:66%">
@@ -162,6 +166,13 @@
     function getEntityBackground_in() {
         return document.getElementById("entity_in");
     }
+    function get_arrow_left() {
+        return document.getElementById("arrow_left");
+    }
+    function get_arrow_right() {
+        return document.getElementById("arrow_right");
+    }
+
 
 
     function draw(scriptContent) {
