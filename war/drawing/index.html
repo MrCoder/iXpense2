@@ -7,8 +7,6 @@
     <script src="./js/jquery.js"></script>
     <script src="./js/jquery.ui.min.js"></script>
 
-    <script src="./codemirror/js/codemirror.js"></script>
-
     <script src="js/drawers/lifeline.js" type="text/javascript"></script>
     <script src="js/drawers/rect.js" type="text/javascript"></script>
     <script src="js/drawers/grid.js" type="text/javascript"></script>
@@ -29,6 +27,7 @@
     <script src="js/domain/messages.js" type="text/javascript"></script>
     <script src="js/domain/activity_sequence.js" type="text/javascript"></script>
     <script src="js/drawers/sequence_printer.js" type="text/javascript"></script>
+    <script src="js/presentation/presentation_entities.js" type="text/javascript"></script>
 
     <script type="text/javascript">
         // Util function, get css property on an element.
@@ -78,8 +77,7 @@
             var e = window.event || e
             $('#key_press').text("You pressed:" + e.keyCode)
             if (e.keyCode == 37) {
-                if (window.selectedEntityName != "")
-                    window.sequencePrinter.moveLeft(window.selectedEntityName);
+                window.sequencePrinter.moveLeft(window.selectedEntityName);
 
             }
 
@@ -88,7 +86,7 @@
                     window.sequencePrinter.moveRight(window.selectedEntityName);
 
             }
-        }
+        };
 
         function choosingEntity() {
             document.onmousemove = captureMousePosition;
@@ -101,7 +99,7 @@
 
             window.selectedEntityName = window.sequencePrinter.checkEntity(xMousePos, yMousePos);
             if (window.selectedEntityName != "") {
-                window.sequencePrinter.select(window.selectedEntityName);
+                window.sequencePrinter.selectEntity(window.selectedEntityName);
                 $('#mouse_position').text("on entity:" + window.selectedEntityName);
             } else {
                 $('#mouse_position').text(s);
@@ -174,7 +172,6 @@
     }
 
 
-
     function draw(scriptContent) {
         window.sequencePrinter.printGrid();
         var activitySequence = new ActivitySequence(scriptContent);
@@ -182,16 +179,6 @@
     }
 </script>
 
-
-<!--<script type="text/javascript">-->
-<!--var editor = CodeMirror.fromTextArea('scriptContent', {-->
-<!--parserfile: "parsecss.js",-->
-<!--stylesheet: "codemirror/css/csscolors.css",-->
-<!--path: "codemirror/js/",-->
-<!--continuousScanning: 500,-->
-<!--lineNumbers: true-->
-<!--});-->
-<!--</script>-->
 
 </body>
 </html>

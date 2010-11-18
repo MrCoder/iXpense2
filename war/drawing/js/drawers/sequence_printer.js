@@ -2,13 +2,13 @@ function PresentationEntity() {
     this.selected = false;
 }
 
-SequencePrinter.prototype.printEntity = function(entity, width, height) {
-    var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, entity);
-    if (presentationEntityFrom != null) {
+
+SequencePrinter.prototype.printEntity = function(entityName, height) {
+    var existingPresentationEntity = this.presentationEntities.getEntity(entityName);
+    if (existingPresentationEntity != null) {
 
         var lifeLineDrawer = new LifeLineDrawer(this.context);
-        lifeLineDrawer.draw(entity, presentationEntityFrom.left, height, presentationEntityFrom.selected);
-        return;
+        return lifeLineDrawer.draw(existingPresentationEntity.name, existingPresentationEntity.left, height, existingPresentationEntity.selected);
     } else {
         var newLeft = 0;
 
@@ -18,17 +18,11 @@ SequencePrinter.prototype.printEntity = function(entity, width, height) {
             newLeft = this.leftOfMostRightEntity + this.lastEntityWidth + this.entitySpace;
         }
         var lifeLineDrawer = new LifeLineDrawer(this.context);
-        this.lastEntityWidth = lifeLineDrawer.draw(entity, newLeft, height);
+        this.lastEntityWidth = lifeLineDrawer.draw(entityName, newLeft, height);
 
         this.leftOfMostRightEntity = newLeft;
 
-        var presentationEntity = new PresentationEntity();
-        presentationEntity.name = entity;
-        presentationEntity.left = newLeft;
-        presentationEntity.width = this.lastEntityWidth;
-        if (!hasThisItem(this.presentationEntities, presentationEntity)) {
-            this.presentationEntities[this.presentationEntitiesCount++] = presentationEntity;
-        }
+        this.presentationEntities.addEntity(entityName, newLeft, this.lastEntityWidth);
     }
 
 };
@@ -43,32 +37,18 @@ function SequencePrinter(context, width, height) {
     this.presentationEntitiesCount = 0;
     this.selectedPresentationEntity = null;
     this.context = context;
-
-    this.resetAll = function() {
-        this.leftOfMostRightEntity = 0;
-        this.lastEntityWidth = 0;
-        this.entitySpace = 150.3;
-        this.lastMessageTop = 60;
-        this.messageSpace = 15.1;
-        this.presentationEntities = new Array();
-        this.presentationEntitiesCount = 0;
-        this.selectedPresentationEntity = null;
-    };
+    this.presentationEntities = new PresentationEntities();
 
 
     this.printMessage = function (syncMessage) {
-        this.printEntity(syncMessage.from, width, height);
-        this.printEntity(syncMessage.to, width, height);
+        this.printEntity(syncMessage.from, height);
+        this.printEntity(syncMessage.to, height);
         var left = 0;
         var length = 0;
-        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, syncMessage.from);
-        if (presentationEntityFrom != null) {
-            left = presentationEntityFrom.left + presentationEntityFrom.width / 2;
-        }
-        var presentationEntityTo = getPresentationEntityByName(this.presentationEntities, syncMessage.to);
-        if (presentationEntityTo != null) {
-            length = presentationEntityTo.left + presentationEntityTo.width / 2 - left;
-        }
+        var presentationEntityFrom = this.presentationEntities.getEntity(syncMessage.from);
+        left = presentationEntityFrom.left + presentationEntityFrom.width / 2;
+        var presentationEntityTo = this.presentationEntities.getEntity(syncMessage.to);
+        length = presentationEntityTo.left + presentationEntityTo.width / 2 - left;
 
         var messageDrawer = new MessageDrawer(context);
         messageDrawer.draw(syncMessage.message, left, this.lastMessageTop + this.messageSpace, length);
@@ -76,7 +56,8 @@ function SequencePrinter(context, width, height) {
     };
 
     this.printInternalInvokeMessage = function(selfInvokeMessage) {
-        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, selfInvokeMessage.from);
+        this.printEntity(selfInvokeMessage.from, height);
+        var presentationEntityFrom = this.presentationEntities.getEntity(selfInvokeMessage.from);
 
         new InternalInvokeDrawer(context)
                 .draw(selfInvokeMessage.message, presentationEntityFrom.left + presentationEntityFrom.width / 2, this.lastMessageTop + this.messageSpace);
@@ -90,64 +71,27 @@ function SequencePrinter(context, width, height) {
     };
 
     this.checkEntity = function(xMousePos, yMousePos) {
-        for (var itemThis in this.presentationEntities) {
-            var presentationEntity = this.presentationEntities[itemThis];
-            if (presentationEntity.left < xMousePos
-                    && presentationEntity.left + presentationEntity.width > xMousePos)
-                return presentationEntity.name;
-        }
-        return "";
+        return this.presentationEntities.checkEntity(xMousePos, yMousePos);
     };
 
-    this.select = function(entityName) {
-        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, entityName);
-        if (presentationEntityFrom != null) {
-            if (this.selectedPresentationEntity != null) {
-                this.selectedPresentationEntity.selected = false;
-            }
-            presentationEntityFrom.selected = true;
-            this.selectedPresentationEntity = presentationEntityFrom;
-            this.onRefresh();
-        }
+    this.selectEntity = function(entityName) {
+        this.presentationEntities.selectEntity(entityName);
+        this.onRefresh();
     };
 
-    this.moveLeft = function(entityName) {
-        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, entityName);
-        if (presentationEntityFrom != null) {
-            presentationEntityFrom.left -= 10.1;
-            this.lastMessageTop = 60;
-            //            this.adjustLeftOfMostRightEntity();
-            this.onRefresh();
-        }
+    this.moveLeft = function() {
+        this.presentationEntities.moveSelectedLeft()
+        this.onRefresh();
     };
 
-    this.moveRight = function(entityName) {
-        var presentationEntityFrom = getPresentationEntityByName(this.presentationEntities, entityName);
-        if (presentationEntityFrom != null) {
-            presentationEntityFrom.left += 10.1;
-            this.lastMessageTop = 60;
-            //            this.adjustLeftOfMostRightEntity();
-            this.onRefresh();
-        }
+    this.moveRight = function() {
+        this.presentationEntities.moveSelectedRight()
+        this.onRefresh();
     };
 
-    this.adjustLeftOfMostRightEntity = function() {
-        var left = 0;
-        for (var itemThis in this.presentationEntities) {
-            var presentationEntity = this.presentationEntities[itemThis];
-            if (presentationEntity.left > left)
-                left = presentationEntity.left;
-        }
-        this.leftOfMostRightEntity = left;
-    };
 
     this.textInfo = function() {
-        var text = "";
-        for (var itemThis in this.presentationEntities) {
-            var presentationEntity = this.presentationEntities[itemThis];
-            text = text + presentationEntity.name + ":" + "[x:" + presentationEntity.left + "]\n";
-        }
-        return text;
+        return this.presentationEntities.textInfo();
     };
 
     this.resetMessageTop = function() {
@@ -156,16 +100,5 @@ function SequencePrinter(context, width, height) {
 
 }
 
-function hasThisItem(presentationEntities, entity) {
-    for (var itemThis in presentationEntities) {
-        if (presentationEntities[itemThis].name == entity) return true;
-    }
-    return false;
-}
 
-function getPresentationEntityByName(presentationEntities, entity) {
-    for (var itemThis in presentationEntities) {
-        if (presentationEntities[itemThis].name == entity) return presentationEntities[itemThis];
-    }
-    return null;
-}
+

@@ -15,7 +15,7 @@ function getMessageFromSentence(sentence) {
     if (sentence.trim() == "") return null;
 
     sentence = sentence.split(" ").join("");
-    /((\w+):)*((\w+)=)*((\w+)\.)*(\w+)/.test(sentence);
+    /((\w+):)*((\w+)=)*((\w+)\.)*(.+)/.test(sentence);
 
     var entityFrom = RegExp.$2
     var returnResult = RegExp.$4
