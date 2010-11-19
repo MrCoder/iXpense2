@@ -4,40 +4,15 @@ function PresentationEntity() {
 
 
 SequencePrinter.prototype.printEntity = function(entityName, height) {
-    var existingPresentationEntity = this.presentationEntities.getEntity(entityName);
-    if (existingPresentationEntity != null) {
-
-        var lifeLineDrawer = new LifeLineDrawer(this.context);
-        return lifeLineDrawer.draw(existingPresentationEntity.name, existingPresentationEntity.left, height, existingPresentationEntity.selected);
-    } else {
-        var newLeft = 0;
-
-        if (this.leftOfMostRightEntity == 0) {
-            newLeft = this.entitySpace / 2;
-        } else {
-            newLeft = this.leftOfMostRightEntity + this.lastEntityWidth + this.entitySpace;
-        }
-        var lifeLineDrawer = new LifeLineDrawer(this.context);
-        this.lastEntityWidth = lifeLineDrawer.draw(entityName, newLeft, height);
-
-        this.leftOfMostRightEntity = newLeft;
-
-        this.presentationEntities.addEntity(entityName, newLeft, this.lastEntityWidth);
-    }
+    this.presentationEntities.printEntity(entityName, height);
 
 };
 
-function SequencePrinter(context, width, height) {
-    this.leftOfMostRightEntity = 0;
-    this.lastEntityWidth = 0;
-    this.entitySpace = 150.3;
+function SequencePrinter(context, context2, width, height) {
     this.lastMessageTop = 60;
     this.messageSpace = 18.1;
-    this.presentationEntities = new Array();
-    this.presentationEntitiesCount = 0;
-    this.selectedPresentationEntity = null;
     this.context = context;
-    this.presentationEntities = new PresentationEntities();
+    this.presentationEntities = new PresentationEntities(context);
 
 
     this.printMessage = function (syncMessage) {
@@ -48,11 +23,18 @@ function SequencePrinter(context, width, height) {
         var presentationEntityFrom = this.presentationEntities.getEntity(syncMessage.from);
         left = presentationEntityFrom.left + presentationEntityFrom.width / 2;
         var presentationEntityTo = this.presentationEntities.getEntity(syncMessage.to);
-        length = presentationEntityTo.left + presentationEntityTo.width / 2 - left;
+        var left2 = presentationEntityTo.left + presentationEntityTo.width / 2;
+        length = left2 - left;
 
         var messageDrawer = new MessageDrawer(context);
         messageDrawer.draw(syncMessage.message, left, this.lastMessageTop + this.messageSpace, length);
         this.lastMessageTop += this.messageSpace;
+
+        var barDrawer = new BarDrawer(context2);
+        barDrawer.draw(left - 5, this.lastMessageTop - 5, 15);
+        var barDrawer = new BarDrawer(context2);
+        barDrawer.draw(left2 - 5, this.lastMessageTop, 15);
+
     };
 
     this.printInternalInvokeMessage = function(selfInvokeMessage) {
@@ -66,6 +48,7 @@ function SequencePrinter(context, width, height) {
 
 
     this.printGrid = function() {
+
         var gridDrawer = new GridDrawer(context);
         gridDrawer.draw(width, height);
     };

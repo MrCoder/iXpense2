@@ -10,9 +10,41 @@ PresentationEntity.prototype.textInfo = function() {
 };
 
 
-function PresentationEntities() {
+function PresentationEntities(context) {
+    this.context = context;
     this.count = 0;
     this.selectedPresentationEntity = null;
+    this.leftOfMostRightEntity = 0;
+    this.lastEntityWidth = 0;
+    this.entitySpace = 150.3;
+    this.lastMessageTop = 60;
+    this.messageSpace = 18.1;
+
+
+    this.printEntity = function(entityName, height){
+        var existingPresentationEntity = this.getEntity(entityName);
+    if (existingPresentationEntity != null) {
+
+        var lifeLineDrawer = new LifeLineDrawer(this.context);
+        return lifeLineDrawer.draw(existingPresentationEntity.name, existingPresentationEntity.left, height, existingPresentationEntity.selected);
+    } else {
+        var newLeft = 0;
+
+        if (this.leftOfMostRightEntity == 0) {
+            newLeft = this.entitySpace / 2;
+        } else {
+            newLeft = this.leftOfMostRightEntity + this.lastEntityWidth + this.entitySpace;
+        }
+        var lifeLineDrawer = new LifeLineDrawer(this.context);
+        this.lastEntityWidth = lifeLineDrawer.draw(entityName, newLeft, height);
+
+        this.leftOfMostRightEntity = newLeft;
+
+        this.addEntity(entityName, newLeft, this.lastEntityWidth);
+    }
+    }
+
+
 }
 PresentationEntities.prototype.presentationEntities = new Array();
 

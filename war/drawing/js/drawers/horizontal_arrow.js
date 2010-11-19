@@ -12,9 +12,9 @@ function HorizontalArrowDrawer(context){
         new HorizontalLineDrawer(context).draw(left, top, length);
         // draw the arrow icon
         if(length > 0) {
-            this.drawRightArrow(left, top, length);
+            this.drawRightArrow(left+5, top, length-10);
         } else {
-            this.drawLeftArrow(left, top, length);
+            this.drawLeftArrow(left-5, top, length+10);
         }
     }
 }
