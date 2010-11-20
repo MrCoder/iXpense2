@@ -26,14 +26,14 @@ function SequencePrinter(context, context2, width, height) {
         var left2 = presentationEntityTo.left + presentationEntityTo.width / 2;
         length = left2 - left;
 
-        var messageDrawer = new MessageDrawer(context);
-        messageDrawer.draw(syncMessage.message, left, this.lastMessageTop + this.messageSpace, length);
+        var messageDrawer = new MessageDrawer();
+        messageDrawer.draw(context, syncMessage.message, left, this.lastMessageTop + this.messageSpace, length);
         this.lastMessageTop += this.messageSpace;
 
+        var barDrawer = new BarDrawer();
+        barDrawer.draw(context2, left - 5, this.lastMessageTop - 5, 15);
         var barDrawer = new BarDrawer(context2);
-        barDrawer.draw(left - 5, this.lastMessageTop - 5, 15);
-        var barDrawer = new BarDrawer(context2);
-        barDrawer.draw(left2 - 5, this.lastMessageTop, 15);
+        barDrawer.draw(context2, left2 - 5, this.lastMessageTop, 15);
 
     };
 

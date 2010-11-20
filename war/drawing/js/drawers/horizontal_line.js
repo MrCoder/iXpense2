@@ -4,7 +4,7 @@ function HorizontalLineDrawer(context) {
         context.beginPath();
         context.moveTo(left, top);
         context.lineTo(left + length, top);
-        context.strokeStyle = css("message", "color");
+        context.strokeStyle = $('#message').css("color");
         context.stroke();
     }
 

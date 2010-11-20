@@ -1,11 +1,12 @@
-function BarDrawer(context) {
-    this.draw = function(left, top, height) {
+function BarDrawer() {
+    this.draw = function(context, left, top, height) {
         context.strokeStyle = "blue";
-        context.strokeRect(left, top, 10, height);
+        var barWidth = 10;
+        context.strokeRect(left - barWidth/2, top, barWidth, height);
 
 
-        context.fillStyle = "red";
-        context.fillRect(left, top, 10, height);
+        context.fillStyle = "green";
+        context.fillRect(left - barWidth/2, top, barWidth, height);
         context.fillStyle = null;
 
     }
