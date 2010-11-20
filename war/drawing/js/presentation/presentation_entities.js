@@ -25,8 +25,8 @@ function PresentationEntities(context) {
         var existingPresentationEntity = this.getEntity(entityName);
     if (existingPresentationEntity != null) {
 
-        var lifeLineDrawer = new LifeLineDrawer(this.context);
-        return lifeLineDrawer.draw(existingPresentationEntity.name, existingPresentationEntity.left, height, existingPresentationEntity.selected);
+        var lifeLineDrawer = new LifeLineDrawer();
+        return lifeLineDrawer.draw(this.context, existingPresentationEntity.name, existingPresentationEntity.left, height, existingPresentationEntity.selected);
     } else {
         var newLeft = 0;
 
@@ -35,8 +35,8 @@ function PresentationEntities(context) {
         } else {
             newLeft = this.leftOfMostRightEntity + this.lastEntityWidth + this.entitySpace;
         }
-        var lifeLineDrawer = new LifeLineDrawer(this.context);
-        this.lastEntityWidth = lifeLineDrawer.draw(entityName, newLeft, height);
+        var lifeLineDrawer = new LifeLineDrawer();
+        this.lastEntityWidth = lifeLineDrawer.draw(this.context, entityName, newLeft, height);
 
         this.leftOfMostRightEntity = newLeft;
 

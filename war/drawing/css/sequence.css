@@ -43,19 +43,11 @@
 
 .canvas {
     position: absolute;
-    width: 2024px;
-    height: 768px;
     border: 1px dotted;
-    z-index: 100;
+    width:800px;
+    height:700px;
 }
 
-.canvas_css {
-    position: absolute;
-    width: 2024px;
-    height: 768px;
-    border: 1px dotted;
-    z-index: 100;
-}
 
 #script_title {
     float: left;

@@ -1,16 +1,25 @@
-function CanvasManager(container){
-    this.entityDrawer = new EntityDrawer();
-    this.addEntity = function(entityName){
+function CanvasManager(container) {
+    this.lifeLineDrawer = new LifeLineDrawer();
+    this.leftMargin = 20.1;
+    this.lifeLenght = 700;
+    this.rightBound = 0;
+    function createCanvas(entityName) {
         var canvasId = 'entity_canvas_' + entityName;
-        var canvasEle = $('<canvas/>', {id:canvasId, 'width': "2048px", 'height': "768px"});
-        canvasEle[0].width = 2048;
-        canvasEle[0].height = 768;
+        var canvasEle = $('<canvas/>', {id:canvasId, class:'canvas'});
 
         container.append(canvasEle);
-        var context = canvasEle[0].getContext('2d');
+        canvasEle[0].width = canvasEle[0].clientWidth;
+        canvasEle[0].height = canvasEle[0].clientHeight;
 
-        this.entityDrawer.draw(context, entityName, 20, 20, false);
+        return canvasEle[0];
+    }
 
+    this.addEntity = function(entityName) {
+        var context = createCanvas(entityName).getContext('2d');
+        var newLeft = 0;
+        newLeft = this.rightBound + this.leftMargin;
+        var entityWidth = this.lifeLineDrawer.draw(context, entityName, newLeft, this.lifeLenght, false);
+        this.rightBound = newLeft + entityWidth;
     }
 }
 

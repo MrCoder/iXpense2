@@ -35,7 +35,9 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
-            new CanvasManager($('#canvasContainer')).addEntity("From");
+            var canvasManager = new CanvasManager($('#canvasContainer'));
+            canvasManager.addEntity("From");
+            canvasManager.addEntity("To");
 
         });
     </script>
@@ -43,6 +45,8 @@
 <body>
 <div id="canvasContainer" class="scroll" style="position: relative;">
     <!--<canvas id="entity_canvas_From" class="canvas" width=2048px height=768px></canvas>-->
+    <!--<canvas id="canvas_sequence_dia" class="canvas" width="300px" height="200px"></canvas>-->
+    
 </div>
 
 <span id=entity_background style=display:none>
@@ -52,6 +56,12 @@
     <img id="entity_br" src="resource/br.gif"/>
     <img id="entity_in" src="resource/in.png"/>
  </span>
+<span id="for_css_util" style="display:none">
+    <span id=entityBox class="entityBox"></span>
+    <span id=line class="line"></span>
+    <span id=message class="message"></span>
+    <span id=canvas class="canvas"></span>
+</span>
 
 </body>
 </html>

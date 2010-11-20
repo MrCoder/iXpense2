@@ -4,7 +4,7 @@ function LineDrawer(ctx) {
         ctx.moveTo(left, top);
         ctx.lineTo(left, top + height);
         /* draw it! */
-        ctx.strokeStyle = css("line", "color");
+        ctx.strokeStyle = $('#line').css("color");
         ctx.stroke();
     }
 }
