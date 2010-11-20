@@ -35,23 +35,72 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
-            var canvasManager = new CanvasManager($('#canvasContainer'));
-            canvasManager.addEntity("From");
-            canvasManager.addEntity("To");
-            canvasManager.addEntity("Second");
-            var syncMessage = new SyncMessage("From", "To", "Message");
-            canvasManager.addMessage(syncMessage);
-            var subMessage = new SyncMessage("To", "Second", "Message1");
-            canvasManager.addSubMessage(subMessage);
+            window.canvasManager = new CanvasManager($('#canvasContainer'));
+            window.activitySequence = new ActivitySequence("");
+            reDrawSequenceDiaWithScript();
+//            canvasManager.addEntity("One");
+//            canvasManager.addEntity("Two");
+//            canvasManager.addEntity("Three");
+//            var syncMessage = new SyncMessage("One", "Two", "Message");
+//            canvasManager.addSubMessage(syncMessage);
+//            var subMessage1 = new SyncMessage("Two", "Three", "Message1");
+//            canvasManager.addSubMessage(subMessage1);
+//            var subMessage2 = new SyncMessage("Three", "One", "Message2");
+//            canvasManager.addSubMessage(subMessage2);
+//            var subMessage3 = new SyncMessage("Two", "One", "Message2");
+//            canvasManager.addSubMessage(subMessage3);
 
         });
+
+        function collapse() {
+            if ($("#handle").hasClass("collapse")) {
+                $("#handle").removeClass("collapse");
+                $("#handle").addClass("expand");
+                $("#script_container").removeClass("collapse");
+                $("#script_container").addClass("expand");
+                $("#floating_container").removeClass("collapse");
+                $("#floating_container").addClass("expand");
+            } else {
+                $("#handle").removeClass("expand");
+                $("#handle").addClass("collapse");
+                $("#script_container").removeClass("expand");
+                $("#script_container").addClass("collapse");
+                $("#floating_container").removeClass("expand");
+                $("#floating_container").addClass("collapse");
+
+            }
+        }
+
+        function reDrawSequenceDiaWithScript() {
+            draw($("#scriptContent")[0].value);
+        }
+
+        function draw(scriptContent) {
+            window.activitySequence.draw(window.canvasManager, scriptContent);
+        }
+
+        
     </script>
 </head>
 <body>
 <div id="canvasContainer" class="scroll" style="position: relative;">
-    <!--<canvas id="entity_canvas_From" class="canvas" width=2048px height=768px></canvas>-->
-    <!--<canvas id="canvas_sequence_dia" class="canvas" width="300px" height="200px"></canvas>-->
+    <div id="floating_container" class="expand">
+        <div id="script_title">Pseudo Code:</div>
+        <div style="float: right;">
+            <span id="handle" class="expand" onclick="collapse()"></span>
+        </div>
+        <div id="script_container" class="expand">
+            <span id="mouse_position">debug info come here.</span> <br/>
+            <span id="entity_info">debug info come here.</span> <br/>
+            <span id="key_press">debug info come here.</span> <br/>
+            <textarea id="scriptContent"
+                      title="Script Content"
+                      style="width:100%;height:100%"
+                      onblur="reDrawSequenceDiaWithScript()">From:Return=To.Message</textarea>
+        </div>
 
+    </div>
+     
 </div>
 
 <span id=entity_background style=display:none>

@@ -22,7 +22,7 @@ function getMessageFromSentence(sentence) {
     var entityTo = RegExp.$6
     var message = RegExp.$7
 
-    if(entityFrom == "") entityFrom = "client";
+    if(entityFrom == "") entityFrom = "CLIENT";
     if(entityTo == "") entityTo = entityFrom;
 
     var text = "";

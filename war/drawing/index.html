@@ -173,57 +173,57 @@
     <canvas id="canvas_sequence_dia_method_bar" class="canvas" width="800px" height="700px"
             onclick="choosingEntity();return false"></canvas>
     <div id="floating_container" class="expand">
-            <div id="script_title">Pseudo Code:</div>
-            <div style="float: right;">
-                <span id="handle" class="expand" onclick="collapse()"></span>
-            </div>
-            <div id="script_container" class="expand">
-                <span id="mouse_position">debug info come here.</span> <br/>
-                <span id="entity_info">debug info come here.</span> <br/>
-                <span id="key_press">debug info come here.</span> <br/>
-                <textarea id="scriptContent"
-                          title="Script Content"
-                          style="width:100%;height:100%"
-                          onblur="reDrawSequenceDiaWithScript()">From:Return=To.Message</textarea>
-            </div>
+        <div id="script_title">Pseudo Code:</div>
+        <div style="float: right;">
+            <span id="handle" class="expand" onclick="collapse()"></span>
+        </div>
+        <div id="script_container" class="expand">
+            <span id="mouse_position">debug info come here.</span> <br/>
+            <span id="entity_info">debug info come here.</span> <br/>
+            <span id="key_press">debug info come here.</span> <br/>
+            <textarea id="scriptContent"
+                      title="Script Content"
+                      style="width:100%;height:100%"
+                      onblur="reDrawSequenceDiaWithScript()">From:Return=To.Message</textarea>
+        </div>
 
     </div>
+</div>
+
+<script type="text/javascript">
+
+    function getEntityBackground() {
+        return document.getElementById("entity_back");
+    }
+    function getEntityBackground_tr() {
+        return document.getElementById("entity_tr");
+    }
+    function getEntityBackground_tl() {
+        return document.getElementById("entity_tl");
+    }
+    function getEntityBackground_br() {
+        return document.getElementById("entity_br");
+    }
+    function getEntityBackground_bl() {
+        return document.getElementById("entity_bl");
+    }
+    function getEntityBackground_in() {
+        return document.getElementById("entity_in");
+    }
+    function get_arrow_left() {
+        return document.getElementById("arrow_left");
+    }
+    function get_arrow_right() {
+        return document.getElementById("arrow_right");
+    }
 
 
-    <script type="text/javascript">
-
-        function getEntityBackground() {
-            return document.getElementById("entity_back");
-        }
-        function getEntityBackground_tr() {
-            return document.getElementById("entity_tr");
-        }
-        function getEntityBackground_tl() {
-            return document.getElementById("entity_tl");
-        }
-        function getEntityBackground_br() {
-            return document.getElementById("entity_br");
-        }
-        function getEntityBackground_bl() {
-            return document.getElementById("entity_bl");
-        }
-        function getEntityBackground_in() {
-            return document.getElementById("entity_in");
-        }
-        function get_arrow_left() {
-            return document.getElementById("arrow_left");
-        }
-        function get_arrow_right() {
-            return document.getElementById("arrow_right");
-        }
-
-
-        function draw(scriptContent) {
-            window.sequencePrinter.printGrid();
-            var activitySequence = new ActivitySequence(scriptContent);
-            activitySequence.print(window.sequencePrinter);
-        }
-    </script>
+    function draw(scriptContent) {
+        window.sequencePrinter.printGrid();
+        var activitySequence = new ActivitySequence(scriptContent);
+        activitySequence.print(window.sequencePrinter);
+    }
+</script>
 
 
 </body>
