@@ -4,8 +4,8 @@ function LifeLineDrawer(ctx) {
         var top = 20;
         var entityHeight = 30;
 
-        var entityDrawer = new EntityDrawer(ctx);
-        var entityWidth = entityDrawer.draw(entityName, left, top, selected);
+        var entityDrawer = new EntityDrawer();
+        var entityWidth = entityDrawer.draw(ctx, entityName, left, top, selected);
         
         var lineDrawer = new LineDrawer(ctx);
         lineDrawer.draw(left + (entityWidth)/2, top + entityHeight, lifeLength);

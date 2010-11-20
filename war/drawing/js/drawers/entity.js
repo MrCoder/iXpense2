@@ -1,5 +1,5 @@
-function EntityDrawer(context){
-    this.draw = function(entityName, left, top, selected){
+function EntityDrawer(){
+    this.draw = function(context, entityName, left, top, selected){
         context.font = "bold 14px Times New Roman";
 
         var textMetrics = context.measureText(entityName);
