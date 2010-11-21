@@ -41,8 +41,8 @@ function SequencePrinter(context, context2, width, height) {
         this.printEntity(selfInvokeMessage.from, height);
         var presentationEntityFrom = this.presentationEntities.getEntity(selfInvokeMessage.from);
 
-        new InternalInvokeDrawer(context)
-                .draw(selfInvokeMessage.message, presentationEntityFrom.left + presentationEntityFrom.width / 2, this.lastMessageTop + this.messageSpace);
+        new InternalInvokeDrawer()
+                .draw(context, selfInvokeMessage.message, presentationEntityFrom.left + presentationEntityFrom.width / 2, this.lastMessageTop + this.messageSpace);
         this.lastMessageTop += this.messageSpace * 2;
     };
 

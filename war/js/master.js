@@ -30,7 +30,7 @@ function initAudio() {
         });
     }
     else {
-        loadingIndicator.remove();
+        loadingIndicator.clear();
     }
 
     $('.player #gutter').slider({

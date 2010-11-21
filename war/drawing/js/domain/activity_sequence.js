@@ -15,15 +15,14 @@ function ActivitySequence(scriptContent) {
     
 
     this.handleEntities = function(newList, oldList, canvasManager){
-        for each (var entity in newList){
-            if ($.inArray(entity, oldList) == -1){
-                canvasManager.addEntity(entity);
-            }
-        }
-
         for each (var entity in oldList){
             if ($.inArray(entity, newList) == -1){
                 canvasManager.removeEntity(entity);
+            }
+        }
+        for each (var entity in newList){
+            if ($.inArray(entity, oldList) == -1){
+                canvasManager.addEntity(entity);
             }
         }
 
@@ -33,9 +32,9 @@ function ActivitySequence(scriptContent) {
         var newEntities = getEntities(scriptContent);
 
         this.handleEntities(newEntities, this.entities, canvasManager);
-        this.entities = newEntities;
-
         canvasManager.removeAllMessages();
+
+        this.entities = newEntities;
 
         this.messages = getMessages(scriptContent);
 

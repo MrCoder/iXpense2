@@ -22,8 +22,8 @@ function getMessageFromSentence(sentence) {
     var entityTo = RegExp.$6
     var message = RegExp.$7
 
-    if(entityFrom == "") entityFrom = "CLIENT";
-    if(entityTo == "") entityTo = entityFrom;
+    if (entityFrom == "") entityFrom = "CLIENT";
+    if (entityTo == "") entityTo = entityFrom;
 
     var text = "";
     if (returnResult != "")
@@ -31,4 +31,17 @@ function getMessageFromSentence(sentence) {
     else
         text = message;
     return new SyncMessage(entityFrom, entityTo, text);
+}
+
+
+function getNewMessages(scriptContent) {
+    if (scriptContent.trim() == "") return null;
+
+    scriptContent = scriptContent.split(" ").join("");
+    scriptContent = scriptContent.split("\n").join("");
+    
+
+
+
+
 }
