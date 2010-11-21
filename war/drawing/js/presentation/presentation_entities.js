@@ -56,15 +56,17 @@ PresentationEntities.prototype.addEntity = function(entityName, left, width) {
 };
 
 PresentationEntities.prototype.contains = function(presentationEntity) {
-    for each (var i in this.presentationEntities) {
-        if (i.name == presentationEntity.name) return true;
+    for (var i in this.presentationEntities) {
+        var presentationEntity = this.presentationEntities[i];
+        if (presentationEntity.name == presentationEntity.name) return true;
         //        if (this.presentationEntities[i].name == presentationEntity.name) return true;
     }
     return false;
 };
 
 PresentationEntities.prototype.getEntity = function(name) {
-    for each (var presentationEntity in this.presentationEntities) {
+    for (var i in this.presentationEntities) {
+        var presentationEntity = this.presentationEntities[i];
         if (presentationEntity.name == name)
             return presentationEntity;
     }
@@ -72,7 +74,9 @@ PresentationEntities.prototype.getEntity = function(name) {
 };
 
 PresentationEntities.prototype.checkEntity = function(xMousePos, yMousePos) {
-    for each (var presentationEntity in this.presentationEntities) {
+    for (var i in this.presentationEntities) {
+        var presentationEntity = this.presentationEntities[i];
+        
         if (presentationEntity.left < xMousePos
                 && presentationEntity.left + presentationEntity.width > xMousePos)
             return presentationEntity.name;
@@ -82,7 +86,9 @@ PresentationEntities.prototype.checkEntity = function(xMousePos, yMousePos) {
 
 PresentationEntities.prototype.textInfo = function() {
     var text = "";
-    for each (var presentationEntity in this.presentationEntities) {
+    for  (var i in this.presentationEntities) {
+        var presentationEntity = this.presentationEntities[i];
+
         text = text + presentationEntity.textInfo() + "\n";
     }
     return text;
@@ -110,4 +116,4 @@ PresentationEntities.prototype.moveSelectedRight = function() {
     if (this.selectedPresentationEntity != null) {
         this.selectedPresentationEntity.left += 9.1;
     }
-}
+};

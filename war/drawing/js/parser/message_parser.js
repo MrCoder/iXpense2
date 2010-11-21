@@ -10,7 +10,8 @@ function MessageParser() {
         scriptContent = scriptContent.split("}").join("\n}\n");
 
         this.expressions = scriptContent.split("\n");
-        for each (var expression in this.expressions) {
+        for (var i in this.expressions) {
+            var expression = this.expressions[i];
             if (expression.trim() == "") continue;
             if (expression.trim() == "{") {
                 this.messageStack.push(this.currentMessage);

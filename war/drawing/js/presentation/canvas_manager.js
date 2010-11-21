@@ -71,7 +71,7 @@ function CanvasManager(container) {
         container.append(canvasEle);
         canvasEle[0].width = canvasEle[0].clientWidth;
         canvasEle[0].height = canvasEle[0].clientHeight;
-        canvasEle.zIndex(zIndex);
+//        canvasEle.zIndex(zIndex);
 
         return canvasEle[0];
     }
@@ -95,7 +95,8 @@ function CanvasManager(container) {
         });
 
         this.rightBound = 0;
-        for each (entity in this.entities){
+        for (var i in this.entities){
+            var entity = this.entities[i];
             var right = entity.left + entity.width/2;
             if (right > this.rightBound) this.rightBound = right;
         }
@@ -103,7 +104,8 @@ function CanvasManager(container) {
     };
 
     this.getEntity = function(entityName) {
-        for each(var entity in this.entities) {
+        for (var i in this.entities) {
+            var entity = this.entities[i];
             if (entity.name == entityName) return entity;
         }
     };
@@ -120,11 +122,13 @@ function CanvasManager(container) {
     };
 
     this.removeAllMessages = function() {
-        for each (var message in this.messages) {
+        for (var i in this.messages) {
+            var message = this.messages[i];
             message.clear();
         }
 
-        for each (var bar in this.bars) {
+        for (var i in this.bars) {
+            var bar = this.bars[i];
             bar.clear();
         }
         this.messages.length = 0;
@@ -147,7 +151,8 @@ function CanvasManager(container) {
         }
 
         if (message.subMessages.length > 0){
-            for each (var subMessage in message.subMessages){
+            for (var i in message.subMessages){
+                var subMessage = message.subMessages[i];
                 this.addSubMessage(subMessage);
             }
         }
@@ -156,7 +161,8 @@ function CanvasManager(container) {
 
     this.getBar = function(entityName) {
         var result;
-        for each(var bar in this.bars) {
+        for (var i in this.bars) {
+            var bar = this.bars[i];
             if (bar.entityName == entityName) result = bar;
         }
         // return the last bar on this entity life line
@@ -174,7 +180,8 @@ function CanvasManager(container) {
         fromBar.extend(toBar.top + toBar.height);
 
         if (message.subMessages.length > 0){
-            for each (var subMessage in message.subMessages){
+            for (var i in message.subMessages){
+                var subMessage = message.subMessages[i];
                 this.addSubMessage(subMessage);
             }
         }
@@ -184,7 +191,7 @@ function CanvasManager(container) {
         var entityFrom = this.getEntity(message.from);
         var entityTo = this.getEntity(message.to);
         var messageCanvasId = 'message_canvas_' + this.messages.length;
-        var messageContext = createCanvas(messageCanvasId, 2000).getContext('2d');
+        var messageContext = createCanvas(messageCanvasId, 5000).getContext('2d');
 
         if (message.from == message.to) {
             this.lastMessageTop = this.lastMessageTop + this.messageSpace;

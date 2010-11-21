@@ -5,7 +5,7 @@ function BarDrawer() {
         context.strokeRect(left - barWidth/2, top, barWidth, height);
 
 
-        context.fillStyle = "green";
+        context.fillStyle = "yellow";
         context.fillRect(left - barWidth/2, top, barWidth, height);
         context.fillStyle = null;
 

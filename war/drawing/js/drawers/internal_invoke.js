@@ -2,6 +2,7 @@ function InternalInvokeDrawer() {
     const length = 30;
     this.draw = function(context, message, left, top ) {
         context.beginPath();
+        left = left + 5;
         context.moveTo(left, top);
         context.lineTo(left + length, top);
         context.lineTo(left + length, top + 20);
@@ -11,7 +12,7 @@ function InternalInvokeDrawer() {
         context.strokeStyle = "#000";
         context.stroke();
 
-        new ArrowIconLeftDrawer(context).draw( left + 5, top+20);
+        new ArrowIconLeftDrawer(context).draw( left, top+20);
 
         new LabelDrawer(context).draw(message, left, length, top);
     }

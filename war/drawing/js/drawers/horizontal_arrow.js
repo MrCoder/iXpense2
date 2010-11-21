@@ -9,11 +9,12 @@ function HorizontalArrowDrawer(context){
 
     this.draw = function(left, top, length){
         // draw the line: ----
-        new HorizontalLineDrawer(context).draw(left, top, length);
         // draw the arrow icon
         if(length > 0) {
+            new HorizontalLineDrawer(context).draw(left+5, top, length-10);
             this.drawRightArrow(left+5, top, length-10);
         } else {
+            new HorizontalLineDrawer(context).draw(left-5, top, length+10);
             this.drawLeftArrow(left-5, top, length+10);
         }
     }

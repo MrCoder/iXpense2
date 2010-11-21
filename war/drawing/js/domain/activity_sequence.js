@@ -15,12 +15,14 @@ function ActivitySequence(scriptContent) {
     
 
     this.handleEntities = function(newList, oldList, canvasManager){
-        for each (var entity in oldList){
+        for(var i in oldList){
+            var entity = oldList[i];
             if ($.inArray(entity, newList) == -1){
                 canvasManager.removeEntity(entity);
             }
         }
-        for each (var entity in newList){
+        for (var i in newList){
+            var entity = newList[i];
             if ($.inArray(entity, oldList) == -1){
                 canvasManager.addEntity(entity);
             }
@@ -36,22 +38,12 @@ function ActivitySequence(scriptContent) {
 
         this.entities = newEntities;
 
-//        this.messages = getMessages(scriptContent);
         var messageParser = new MessageParser();
         this.messages = messageParser.parse(scriptContent);
-        for each(var message in this.messages){
+        for (var i in this.messages){
+            var message = this.messages[i];
             canvasManager.addMessage(message);
         }
-        
-//        var first = true;
-//        for each(var message in this.messages){
-//            if (first || message.from == "CLIENT"){
-//                canvasManager.addMessage(message);
-//                first = false;
-//            } else {
-//                canvasManager.addSubMessage(message);
-//            }
-//        }
-        
+
     }
-};
+}

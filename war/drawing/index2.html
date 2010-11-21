@@ -34,22 +34,17 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function() {
+        jQuery(window).load(function() {
+            if (document.readyState != 'complete') {
+                // chrome / safari will trigger load function before images are finished
+                // check readystate in safari browser to ensure images are done loading
+                setTimeout(arguments.callee, 100);
+                return;
+            }
+            // do things you want to do
             window.canvasManager = new CanvasManager($('#canvasContainer'));
             window.activitySequence = new ActivitySequence("");
             reDrawSequenceDiaWithScript();
-//            canvasManager.addEntity("One");
-//            canvasManager.addEntity("Two");
-//            canvasManager.addEntity("Three");
-//            var syncMessage = new SyncMessage("One", "Two", "Message");
-//            canvasManager.addSubMessage(syncMessage);
-//            var subMessage1 = new SyncMessage("Two", "Three", "Message1");
-//            canvasManager.addSubMessage(subMessage1);
-//            var subMessage2 = new SyncMessage("Three", "One", "Message2");
-//            canvasManager.addSubMessage(subMessage2);
-//            var subMessage3 = new SyncMessage("Two", "One", "Message2");
-//            canvasManager.addSubMessage(subMessage3);
-
         });
 
         function collapse() {
@@ -79,7 +74,7 @@
             window.activitySequence.draw(window.canvasManager, scriptContent);
         }
 
-        
+
     </script>
 </head>
 <body>
@@ -96,11 +91,28 @@
             <textarea id="scriptContent"
                       title="Script Content"
                       style="width:100%;height:100%"
-                      onblur="reDrawSequenceDiaWithScript()">From:Return=To.Message</textarea>
+                      onblur="reDrawSequenceDiaWithScript()">document.ready{
+                canvasManager.new()
+                activitySeq.new()
+                redraw(){
+                draw(scriptContent){
+                activitySeq.draw(canvasManager, script){
+                getEntities(script)
+                handleEntities(){
+                canvasManager.addEntity()
+                canvasManager.removeEntity()
+                }
+                messageParser.new
+                message*=messageParser.parse(script);
+                canvasManager.addMessage(message*)
+
+                }
+                }
+                }</textarea>
         </div>
 
     </div>
-     
+
 </div>
 
 <span id=entity_background style=display:none>
