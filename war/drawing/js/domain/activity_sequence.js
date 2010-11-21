@@ -36,18 +36,22 @@ function ActivitySequence(scriptContent) {
 
         this.entities = newEntities;
 
-        this.messages = getMessages(scriptContent);
-
-        
-        var first = true;
+//        this.messages = getMessages(scriptContent);
+        var messageParser = new MessageParser();
+        this.messages = messageParser.parse(scriptContent);
         for each(var message in this.messages){
-            if (first || message.from == "CLIENT"){
-                canvasManager.addMessage(message);
-                first = false;
-            } else {
-                canvasManager.addSubMessage(message);
-            }
+            canvasManager.addMessage(message);
         }
+        
+//        var first = true;
+//        for each(var message in this.messages){
+//            if (first || message.from == "CLIENT"){
+//                canvasManager.addMessage(message);
+//                first = false;
+//            } else {
+//                canvasManager.addSubMessage(message);
+//            }
+//        }
         
     }
 };

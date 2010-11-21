@@ -136,7 +136,7 @@ function CanvasManager(container) {
         var richMessage = this.drawMessage(message);
 
         if (message.from != message.to) {
-            var top = this.lastMessageTop - this.defaultBarHeight / 3;
+            var top = this.lastMessageTop-1;
             var fromBar = this.createABar(richMessage.start, message.from, top);
         }
 
@@ -145,6 +145,13 @@ function CanvasManager(container) {
             toBar.parentBar = fromBar;
             fromBar.extend(toBar.top + toBar.height);
         }
+
+        if (message.subMessages.length > 0){
+            for each (var subMessage in message.subMessages){
+                this.addSubMessage(subMessage);
+            }
+        }
+
     };
 
     this.getBar = function(entityName) {
@@ -165,6 +172,12 @@ function CanvasManager(container) {
         var toBar = this.createABar(end, message.to, this.lastMessageTop);
         toBar.parentBar = fromBar;
         fromBar.extend(toBar.top + toBar.height);
+
+        if (message.subMessages.length > 0){
+            for each (var subMessage in message.subMessages){
+                this.addSubMessage(subMessage);
+            }
+        }
     };
 
     this.drawMessage = function (message) {
